@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Profile</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>🖨 Dot Net Cafe</h2>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/add_customer">➕ Add Customer</a>
+    <a href="/manual_billing">🧾 Billing</a>
+    <a href="/open_customers_excel">📁 Customer Excel</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+    <!-- CUSTOMER INFO -->
+    <div class="card">
+        <h2>{{ customer.name }}</h2>
+        <p><b>Phone:</b> {{ customer.phone }}</p>
+        <p><b>Email:</b> {{ customer.email }}</p>
+        <p><b>Place:</b> {{ customer.place }}</p>
+    </div>
+
+    <!-- CUSTOMER HISTORY -->
+    <div class="card">
+        <h3>🕘 Customer History</h3>
+
+        <form method="post" action="/add_history/{{ customer.id }}">
+            <input
+                type="text"
+                name="description"
+                placeholder="e.g. CET exam form filled"
+                required
+            >
+            <button>Add History</button>
+        </form>
+
+        {% if history %}
+            <ul class="history-list">
+                {% for h in history %}
+                <li>
+                    <b>{{ h.description }}</b><br>
+                    <span class="history-date">{{ h.date }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p style="color:#64748b; margin-top:10px;">
+                No history added yet.
+            </p>
+        {% endif %}
+    </div>
+
+    <!-- UPLOAD DOCUMENT -->
+    <div class="card">
+        <h3>📤 Upload Document</h3>
+        <form method="post" action="/upload/{{ customer.id }}" enctype="multipart/form-data">
+            <input type="file" name="file" required>
+            <button>Upload</button>
+        </form>
+    </div>
+
+    <!-- SCAN DOCUMENT -->
+    <div class="card">
+        <h3>📠 Scan Document</h3>
+        <p style="color:#64748b;">Scan from printer, then click below</p>
+        <form method="post" action="/scan/{{ customer.id }}">
+            <button>Scan & Save</button>
+        </form>
+    </div>
+
+    <!-- STORED DOCUMENTS -->
+    <div class="card">
+        <h3>📁 Stored Documents</h3>
+
+        {% if docs %}
+        <table>
+            <tr>
+                <th>File Name</th>
+                <th>Action</th>
+            </tr>
+            {% for d in docs %}
+            <tr>
+                <td>{{ d.filename }}</td>
+                <td>
+                    <a href="/static/uploads/{{ customer.name | replace(' ','_') }}_{{ customer.phone }}/{{ d.filename }}" target="_blank">
+                        View / Print
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p style="color:#64748b;">No documents uploaded.</p>
+        {% endif %}
+    </div>
+
+    <!-- BILLING -->
+    <div class="card">
+        <h3>🧾 Billing</h3>
+        <a href="/billing/{{ customer.id }}">
+            <button>Generate Bill</button>
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

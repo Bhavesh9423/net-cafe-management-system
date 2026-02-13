@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="card center-card">
+    <h2>Admin Login</h2>
+
+    {% for m in get_flashed_messages() %}
+        <p style="color:red; margin-bottom:10px;">{{ m }}</p>
+    {% endfor %}
+
+    <form method="post">
+        <input name="username" placeholder="Username" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button>Login</button>
+    </form>
+</div>
+
+</body>
+</html>

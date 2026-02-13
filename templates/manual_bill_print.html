@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+<div class="card" style="max-width:600px;margin:40px auto;">
+<h2 style="text-align:center;">🖨 Dot Net Cafe</h2>
+<p><b>Name:</b> {{ name }}</p>
+<p><b>Phone:</b> {{ phone }}</p>
+<p><b>Date:</b> {{ date }}</p>
+<hr>
+<pre>{{ items }}</pre>
+<p>Subtotal: ₹{{ subtotal }}</p>
+<!-- <p>Discount: ₹{{ discount }}</p> -->
+<h3>Total: ₹{{ total }}</h3>
+<button onclick="window.print()">Print</button>
+</div>
+</body>
+</html>

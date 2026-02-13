@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Manual Billing</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>🖨 Dot Net Cafe</h2>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/manual_billing">🧾 Billing</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<div class="main">
+
+<div class="card">
+    <h3>Manual Billing</h3>
+
+    <form method="post">
+
+        <input name="name" placeholder="Customer Name" required>
+        <input name="phone" placeholder="Phone (optional)">
+
+        <table>
+            <tr>
+                <th>Service</th>
+                <th>Quantity</th>
+                <th>Rate (₹)</th>
+            </tr>
+
+            <tr>
+                <td>B/W Print</td>
+                <td><input name="bw_qty" value="0"></td>
+                <td><input name="bw_price" value="5"></td>
+            </tr>
+
+            <tr>
+                <td>Color Print</td>
+                <td><input name="color_qty" value="0"></td>
+                <td><input name="color_price" value="10"></td>
+            </tr>
+
+            <tr>
+                <td>Scan</td>
+                <td><input name="scan_qty" value="0"></td>
+                <td><input name="scan_price" value="20"></td>
+            </tr>
+
+            <tr>
+                <td>Digital Signature</td>
+                <td><input name="ds_qty" value="0"></td>
+                <td><input name="ds_price" value="20"></td>
+            </tr>
+
+            <tr>
+                <td><input name="custom_name" placeholder="Other Service"></td>
+                <td><input name="custom_qty" value="0"></td>
+                <td><input name="custom_price" value="0"></td>
+            </tr>
+        </table>
+
+        <!-- <label><b>Discount (₹)</b></label> -->
+        <!-- <input name="discount" value="0" placeholder="Discount"> -->
+        
+        <button>Generate Bill</button>
+    </form>
+</div>
+
+</div>
+</body>
+</html>

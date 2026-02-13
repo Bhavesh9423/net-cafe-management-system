@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Net Cafe Bill</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <style>
+        /* ---------- BILL CONTAINER ---------- */
+        .bill-box {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            border-radius: 12px;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .bill-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .bill-header h2 {
+            margin: 0;
+        }
+
+        .bill-header p {
+            margin: 4px 0;
+            color: gray;
+        }
+
+        .bill-section {
+            margin-top: 20px;
+        }
+
+        .bill-section h4 {
+            margin-bottom: 10px;
+            border-bottom: 1px dashed #ccc;
+            padding-bottom: 5px;
+        }
+
+        .bill-items {
+            font-family: monospace;
+            white-space: pre-line;
+        }
+
+        .bill-total {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .print-btn {
+            margin-top: 25px;
+            text-align: center;
+        }
+
+        /* ---------- PRINT SETTINGS ---------- */
+        @media print {
+            body {
+                background: white;
+            }
+            .print-btn {
+                display: none;
+            }
+            .bill-box {
+                box-shadow: none;
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="bill-box">
+
+    <!-- HEADER -->
+<div class="bill-header">
+    <h2>🖨 Dot Net Cafe</h2>
+    <p><b>Net Cafe & Printing Services</b></p>
+    <p>
+        Shivaji Road, Opposite Rahamatulla Restaurant,<br>
+        Miraj, Maharashtra – 416410<br>
+        📞 +91 9422616136
+    </p>
+    <p><b>Date:</b> {{ bill.date }}</p>
+</div>
+
+
+    <!-- CUSTOMER INFO -->
+    <div class="bill-section">
+        <h4>Customer Details</h4>
+        <p><b>Name:</b> {{ customer.name }}</p>
+        <p><b>Phone:</b> {{ customer.phone }}</p>
+    </div>
+
+    <!-- BILL ITEMS -->
+    <div class="bill-section">
+        <h4>Services</h4>
+        <div class="bill-items">
+            {{ bill.items }}
+        </div>
+    </div>
+
+    <!-- TOTALS -->
+    <div class="bill-section">
+        <p><b>Subtotal:</b> ₹{{ bill.subtotal }}</p>
+        <p><b>Discount:</b> ₹{{ bill.discount }}</p>
+        <div class="bill-total">
+            Total Amount: ₹{{ bill.total }}
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="bill-section">
+        <p style="font-size:13px; color:gray; text-align:center;">
+            Once printed, documents are not taken back.<br>
+            Thank you for visiting Net Cafe!
+        </p>
+    </div>
+
+    <!-- PRINT BUTTON -->
+    <div class="print-btn">
+        <button onclick="window.print()">🖨 Print Bill</button>
+    </div>
+
+</div>
+
+</body>
+</html>

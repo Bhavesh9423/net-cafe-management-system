@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <script>
+        function confirmDelete(name) {
+            return confirm("Are you sure you want to delete " + name + " ?");
+        }
+    </script>
+
+</head>
+<body>
+
+<div class="sidebar">
+    <h2>🖨 Dot Net Cafe</h2>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/add_customer">➕ Add Customer</a>
+    <a href="/manual_billing">🧾 Billing</a>
+    <a href="/open_customers_excel">📁 Customer Excel</a>
+    <a href="/logout">🚪 Logout</a>
+</div>
+
+<div class="main">
+
+<div class="card">
+
+    <h2>Customer List</h2>
+
+    <form method="get" action="/search_customer">
+        <input type="text"
+               name="q"
+               placeholder="Search by name or phone number"
+               value="{{ search_query if search_query else '' }}">
+    </form>
+
+    {% if customers %}
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th style="text-align:center;">Actions</th>
+        </tr>
+
+        {% for c in customers %}
+        <tr>
+            <td>{{ c.name }}</td>
+            <td>{{ c.phone }}</td>
+
+            <td style="text-align:center;">
+
+                <!-- OPEN -->
+                <a href="{{ url_for('customer_profile', id=c.id, name=c.name | replace(' ','_')) }}">
+                    <button type="button">Open</button>
+                </a>
+
+                <!-- EDIT -->
+                <a href="{{ url_for('edit_customer', id=c.id) }}">
+                    <button type="button" style="background:#f59e0b;">
+                        Edit
+                    </button>
+                </a>
+
+                <!-- DELETE -->
+                <a href="{{ url_for('delete_customer', id=c.id) }}"
+                   onclick="return confirmDelete('{{ c.name }}')">
+                    <button type="button" style="background:#ef4444;">
+                        Delete
+                    </button>
+                </a>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% else %}
+        <p>No customer found</p>
+    {% endif %}
+
+</div>
+</div>
+
+</body>
+</html>
