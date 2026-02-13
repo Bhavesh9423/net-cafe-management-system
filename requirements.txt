@@ -1,7 +1,6 @@
-flask
-flask_sqlalchemy
-openpyxl
-werkzeug
-pillow
+Flask
+Flask-SQLAlchemy
 gunicorn
 psycopg2-binary
+openpyxl
+Pillow
