@@ -11,14 +11,22 @@ from werkzeug.utils import secure_filename
 from openpyxl import Workbook
 
 # =========================================================
-# SAFE APP DATA LOCATION (PERMANENT DATABASE)
+# SAFE DATA DIRECTORY (WORKS ON WINDOWS + RENDER)
 # =========================================================
 
 def get_app_data_dir():
     base = os.getenv("LOCALAPPDATA")
-    app_dir = os.path.join(base, "DotNetCafe")
+
+    # If Windows local machine
+    if base:
+        app_dir = os.path.join(base, "DotNetCafe")
+    else:
+        # If Linux / Render
+        app_dir = os.path.join(os.getcwd(), "data")
+
     os.makedirs(app_dir, exist_ok=True)
     return app_dir
+
 
 DATA_DIR = get_app_data_dir()
 
@@ -85,7 +93,7 @@ class Activity(db.Model):
     date = db.Column(db.String(50))
 
 # =========================================================
-# EXCEL REBUILD (AUTO SYNC)
+# EXCEL SYNC (AUTO REBUILD)
 # =========================================================
 
 def rebuild_excel():
@@ -94,7 +102,6 @@ def rebuild_excel():
     ws.append(["ID", "Name", "Phone", "Email", "Place"])
 
     customers = Customer.query.all()
-
     for c in customers:
         ws.append([c.id, c.name, c.phone, c.email, c.place])
 
@@ -131,23 +138,30 @@ def logout():
 def dashboard():
     if not admin_required():
         return redirect("/")
+
     customers = Customer.query.all()
-    return render_template("dashboard.html",
-                           customers=customers,
-                           search_query="")
+    return render_template(
+        "dashboard.html",
+        customers=customers,
+        search_query=""
+    )
 
 @app.route("/search_customer")
 def search_customer():
     if not admin_required():
         return redirect("/")
+
     q = request.args.get("q", "")
     customers = Customer.query.filter(
         (Customer.name.ilike(f"%{q}%")) |
         (Customer.phone.ilike(f"%{q}%"))
     ).all()
-    return render_template("dashboard.html",
-                           customers=customers,
-                           search_query=q)
+
+    return render_template(
+        "dashboard.html",
+        customers=customers,
+        search_query=q
+    )
 
 # =========================================================
 # ADD CUSTOMER
@@ -211,6 +225,7 @@ def delete_customer(id):
 
     customer = Customer.query.get_or_404(id)
 
+    # Delete upload folder
     folder = f"{customer.name}_{customer.phone}".replace(" ", "_")
     folder_path = os.path.join(UPLOAD_DIR, folder)
     if os.path.exists(folder_path):
@@ -239,14 +254,15 @@ def customer_profile(id, name):
 
     customer = Customer.query.get_or_404(id)
     docs = Document.query.filter_by(customer_id=id).all()
-    history = Activity.query.filter_by(
-        customer_id=id
-    ).order_by(Activity.id.desc()).all()
+    history = Activity.query.filter_by(customer_id=id)\
+        .order_by(Activity.id.desc()).all()
 
-    return render_template("customer_profile.html",
-                           customer=customer,
-                           docs=docs,
-                           history=history)
+    return render_template(
+        "customer_profile.html",
+        customer=customer,
+        docs=docs,
+        history=history
+    )
 
 # =========================================================
 # BILLING
@@ -267,10 +283,14 @@ def billing(id):
                 subtotal += total
                 items.append(f"{name}: {qty} x {price} = {total}")
 
-        add_item("B/W Print", int(request.form.get("bw_qty", 0)), int(request.form.get("bw_price", 0)))
-        add_item("Color Print", int(request.form.get("color_qty", 0)), int(request.form.get("color_price", 0)))
-        add_item("Scan", int(request.form.get("scan_qty", 0)), int(request.form.get("scan_price", 0)))
-        add_item("Digital Signature", int(request.form.get("ds_qty", 0)), int(request.form.get("ds_price", 0)))
+        add_item("B/W Print", int(request.form.get("bw_qty", 0)),
+                 int(request.form.get("bw_price", 0)))
+        add_item("Color Print", int(request.form.get("color_qty", 0)),
+                 int(request.form.get("color_price", 0)))
+        add_item("Scan", int(request.form.get("scan_qty", 0)),
+                 int(request.form.get("scan_price", 0)))
+        add_item("Digital Signature", int(request.form.get("ds_qty", 0)),
+                 int(request.form.get("ds_price", 0)))
         add_item(request.form.get("custom_name"),
                  int(request.form.get("custom_qty", 0)),
                  int(request.form.get("custom_price", 0)))
@@ -301,9 +321,12 @@ def billing(id):
 def bill_print(id):
     bill = Bill.query.get_or_404(id)
     customer = Customer.query.get(bill.customer_id)
-    return render_template("bill_print.html",
-                           bill=bill,
-                           customer=customer)
+
+    return render_template(
+        "bill_print.html",
+        bill=bill,
+        customer=customer
+    )
 
 # =========================================================
 # OPEN EXCEL
@@ -322,5 +345,7 @@ def open_customers_excel():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
-    app.run(host="0.0.0.0", port=5000)
 
+    # For Render compatibility
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
