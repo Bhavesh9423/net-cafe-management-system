@@ -1,0 +1,152 @@
+* {
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+body {
+    margin: 0;
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+/* ---------- SIDEBAR ---------- */
+.sidebar {
+    width: 240px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    background: linear-gradient(180deg, #0f172a, #1e293b);
+    color: white;
+    padding: 24px 18px;
+}
+
+.sidebar h2 {
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.sidebar a {
+    display: flex;
+    align-items: center;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    color: #cbd5e1;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.3s;
+}
+
+.sidebar a:hover {
+    background: rgba(255,255,255,0.12);
+    color: white;
+}
+
+/* ---------- MAIN CONTENT ---------- */
+.main {
+    margin-left: 240px;
+    padding: 40px 50px;
+}
+
+/* ---------- CARD ---------- */
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    margin-bottom: 30px;
+    max-width: 1000px;
+}
+
+/* ---------- CENTER CARD (LOGIN / SINGLE FORMS) ---------- */
+.center-card {
+    max-width: 420px;
+    margin: 120px auto;
+}
+
+/* ---------- HEADINGS ---------- */
+.card h2,
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 18px;
+}
+
+/* ---------- INPUT ---------- */
+input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    margin-bottom: 14px;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+/* ---------- BUTTON ---------- */
+button {
+    padding: 10px 22px;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+/* ---------- TABLE ---------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    text-align: left;
+    padding: 14px;
+    background: #f8fafc;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    vertical-align: middle;
+}
+
+td:last-child {
+    text-align: center;
+}
+
+/* ---------- SEARCH BAR ---------- */
+.search-box {
+    max-width: 420px;
+    margin-bottom: 20px;
+}
+
+/* ---------- CUSTOMER HISTORY ---------- */
+.history-list {
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.history-list li {
+    background: #f8fafc;
+    border-left: 5px solid #2563eb;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 14px;
+}
+
+.history-date {
+    font-size: 13px;
+    color: #64748b;
+}
